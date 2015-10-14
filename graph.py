@@ -1,47 +1,39 @@
 # -*- coding: utf-8 -*-
 from collections import defaultdict
-from collections import namedtuple
+import random
 class Grafo(object):
 
-    def __init__(self, conexoes, weighted=False): # Falta fazer o peso das arestas.
+    def __init__(self, verticeInicial, weight=False, orientado=False):
         self._ordem = 0
         self.grafo = defaultdict(dict)
-        if weighted:
-             self.peso = defaultdict(dict)
-        self.adicionarVertice(conexoes, weighted)
+        self._orientado = orientado
+        self._weight = weight
+        self.adicionarVertice(verticeInicial)
 
-    def adicionarVertice(self, conexoes, weighted=False):
-        if weighted:
-            if self._ordem != 0:
-                for v1, v2, weight in conexoes:
-                    self.adicionarAresta(v1, v2, weight, weighted)
+    def adicionarVertice(self, v1):
+        self.grafo[v1]
+        self._ordem += 1
+
+#conecta
+    def adicionarAresta(self, v1, v2, weight=0):
+
+        if not self._orientado:
+            if self._weight:
+                self.grafo[v1][v2] = weight
+                self.grafo[v2][v1] = weight
+    
             else:
-                for v1 in conexoes:
-                    self.grafo[v1]
+    
+                self.grafo[v1][v2]
+                self.grafo[v2][v1]
         else:
-            for v1, v2 in conexoes:
-                self.adicionarAresta(v1, v2)
+            if self._weight:
+                self.grafo[v1][v2] = weight
 
-    def adicionarAresta(self, v1, v2, weight=0, weighted=False):
-        if weighted:
-            # Ligacao = namedtuple('Ligacao', ['weight','v2'])
-
-            # l = Ligacao(weight, v2)
-            # self.grafo[v1].add(l)
-            # l = Ligacao(weight, v1)
-            # self.grafo[v2].add(l)
-            self.grafo[v1][v2] = weight
-            self.grafo[v2][v1] = weight
-            self._ordem += 1
-
-        else:
-            self.grafo[v1][v2]
-            self.grafo[v2][v1]
-            self._ordem += 1
-
+            else:
+                self.grafo[v1][v2]
 
     def removerVertice(self, v):
-        #for vertice, ligacao in self.grafo.items():
         for vertice, adjacentes in self.grafo.items():
             try:
                adjacentes.pop(v, None)
@@ -53,18 +45,22 @@ class Grafo(object):
             pass
         self._ordem -= 1
 
+#desconecta
     def removerAresta(self, v1, v2):
-        try:
-            del self.grafo[v1][v2]
-        except KeyError:
-            pass
-        try:
-            del self.grafo[v2][v1]
-        except KeyError:
-            pass
-
-    def vertices():
-
+        if not self._orientado:
+            try:
+                del self.grafo[v1][v2]
+            except KeyError:
+                pass
+            try:
+                del self.grafo[v2][v1]
+            except KeyError:
+                pass
+        else:
+            try:
+                del self.grafo[v1][v2]
+            except KeyError:
+                pass 
 
     def conectado(self, v1, v2):
 
@@ -76,6 +72,65 @@ class Grafo(object):
     def ordem(self):
         return self._ordem
 
+    def vertices(self):
+        conjunto = set()
+        for v, l in self.grafo.items():
+            conjunto.add(v)
+        return conjunto
+
+    def umVertice(self):
+        rand = random.randrange(1, self._ordem)
+        count = 0
+        for v, l in self.grafo.items():
+            if count == rand:
+                return v
+            count += 1
+
+    def adjacentes(self, v):
+        adj = self.grafo[v]
+        conjunto = set()
+        for vertices in adj:
+            conjunto.add(vertices)
+        return conjunto
+
+    def grau(self, v):
+        adj = self.adjacentes(v)
+        count = 0
+        for vertices in adj:
+            count += 1
+        return count
+
+    def peso(self, v1, v2):
+        return self.grafo[v1][v2]
+
+    def buscaProfundidade(self, v, vA, jaVisitados, l):
+        if v in jaVisitados:
+            return True
+        jaVisitados.add(v)
+        if vA != None:
+            l.remove(v)
+        for x in self.adjacentes(v):
+            if x != vA:
+                if self.buscaProfundidade(x, v, jaVisitados, l):
+                    return True
+        return False
+# def buscaLargura():
+
+
+    def buscaCiclo(self, v):
+        l = self.vertices()
+        lista = set()
+        while True:
+            try:
+                x = l.pop()
+            except KeyError:
+                break
+            if self.buscaProfundidade(x, None, lista,l):
+                return True
+            print ("Pass")
+            print l
+
+        return False
 
     def __str__(self):
         return '{}({})'.format(self.__class__.__name__, dict(self.peso))

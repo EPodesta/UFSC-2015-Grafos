@@ -1,6 +1,6 @@
 from graph import Grafo
 
-g = Grafo('A', True)
+g = Grafo('A', True, True)
 g.adicionarVertice('B')
 g.adicionarVertice('C')
 g.adicionarVertice('D')
@@ -27,6 +27,9 @@ g.adicionarAresta('B', 'E', 2)
 g.adicionarAresta('D', 'F', 1)
 #g.adicionarAresta('F', 'A', 2)
 
+g.adicionarAresta('H', 'G', 10)
+g.adicionarAresta('P', 'G', 10)
+g.adicionarAresta('W', 'G', 10)
 g.adicionarAresta('G', 'H', 8)
 g.adicionarAresta('H', 'I', 4)
 g.adicionarAresta('H', 'J', 7)
@@ -53,6 +56,8 @@ print g.vertices()
 print ("Testa")
 print g.adjacentes('B')
 
-print g.grau('E')
+# print g.grau('E')
 
 print g.buscaCiclo('A')
+print ("Hi")
+print (g.grauAntecessores('G'))

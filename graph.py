@@ -93,6 +93,13 @@ class Grafo(object):
             conjunto.add(vertices)
         return conjunto
 
+    def grauSucessores(self, v):
+        return self.grafo[v]
+
+    def grauAntecessores(self, v):
+        return {i for i in self.grafo if v in self.grafo[i]}
+
+
     def grau(self, v):
         adj = self.adjacentes(v)
         count = 0
@@ -127,8 +134,6 @@ class Grafo(object):
                 break
             if self.buscaProfundidade(x, None, lista,l):
                 return True
-            print ("Pass")
-            print l
 
         return False
 

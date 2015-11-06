@@ -1,26 +1,31 @@
 # -*- coding: utf-8 -*-
 from collections import defaultdict
 import random
-#Essa classe será responsável por representar um grafo, possuindo as funções
-#básicas para sua representação.
-class Graph(object):
 
-#Inicializa o grafo. O init recebe como parâmetro o vértice inicial, um boolean
-#para determinar se possui peso ou não e outro boolean para determinar se o grafo
-#será orientado ou não. A base para esse grafo foi um Dicionário de Dicionários.
+
+
+class Graph(object):
+    """
+    This class will represent a graph with its basic functions.
+    """
+    
     def __init__(self, initialVertex, weight=False, oriented=False):
+        """
+        Inicialize a graph. The init recieves the initial vertex and two boolean to set if the graph
+        will be weighted or orienteded, respectively.
+        """
         self.graph = defaultdict(dict)
         self._oriented = oriented
         self._weight = weight
         self.addVertex(initialVertex)
 
-#Esse método adicionará um vértice no grafo(dicionário).
+
     def addVertex(self, v1):
+        """This method will add a vertex in the graph."""
         self.graph[v1]
 
-#O método addEdge irá conectar dois vértices e, caso tenha sido especificado que o grafo
-#será valorado, atribuir um peso.
     def addEdge(self, v1, v2, weight=0):
+        """This method will connected two vertices and, if was especified, a weight."""
 
         if not self._oriented:
             if self._weight:
@@ -39,6 +44,7 @@ class Graph(object):
                 self.graph[v1][v2]
 
     def deleteVertex(self, v):
+        """This method will remove a vertex in the graph."""
         for vertex, adjacent in self.graph.items():
             try:
                adjacent.pop(v, None)
@@ -49,8 +55,8 @@ class Graph(object):
         except KeyError:
             pass
 
-#O método deleteEdge desconectará dois vértices.
     def deleteEdge(self, v1, v2):
+        """This method will desconnect two vertices."""
         if not self._oriented:
             try:
                 del self.graph[v1][v2]
@@ -65,27 +71,24 @@ class Graph(object):
                 del self.graph[v1][v2]
             except KeyError:
                 pass 
-#O método connected verificará se dois vértices estão conectados em um grafo.
+
     def connected(self, v1, v2):
+        """It will be verified if two vertices are connected."""
+        return v2 in self.graph[v1]
 
-        if v2 in self.graph[v1]:
-            return True
-        else:
-            return False
-
-#O método order retornará a ordem do Grafo(Número de vértices).
     def order(self):
+        """It will return the order of the graph."""
         return len(self.graph)
 
-#O método vertexes irá retornar um set com todos os vértices do Grafo.
-    def vertexes(self):
+    def vertices(self):
+        """It will be returned a set with all the vertices in the graph."""
         _set = set()
         for v, l in self.graph.items():
             _set.add(v)
         return _set
 
-#OneVertex coletará um vértice aleatório do grafo.
     def oneVertex(self):
+        """This method will return a random vertex in the graph."""
         order = self.order()
         rand = random.randrange(1, order)
         count = 0
@@ -94,44 +97,46 @@ class Graph(object):
                 return v
             count += 1
 
-#O método adjacent retornará um set com todos os vértices adjacentes a outro vértice.
     def adjacent(self, v):
-        adj = self.graph[v]
+        """This method will return a set with all the adjacents of a vertex in a non-oriented graph."""
         _set = set()
+        adj = self.graph[v]
         for vertex in adj:
             _set.add(vertex)
         return _set
 
-#O método successor será responsável por coletar os sucessores de um vértice em um grafo
-#orientado.
     def successor(self, v):
+        """It will return the successors of a vertex in a oriented graph."""
         if self._oriented:
             return self.graph[v]
-        else:
-            print("Successor only makes sense in a oriented graph!")
 
-#O método predecessor retornará os predecessores de um dado vértice em um grafo orientado.
     def predecessor(self, v):
+        """It will return the predecessors of a vertex in a oriented graph."""
         if self._oriented:
             return {i for i in self.graph if v in self.graph[i]}
-        else:
-            print("Predecessor only makes sense in a oriented graph!")
 
-#O método degree retornará a quantidade de arestas de um dado vértice, ou seja, seu grau.
     def degree(self, v):
+        """This method will return the quantity of edges of a vertex in a non-oriented graph."""
         adj = self.adjacent(v)
         count = 0
-        for vertexes in adj:
+        for vertices in adj:
             count += 1
         return count
 
-#O método weight retornará o peso de uma aresta, sendo especificada pelos vértices que ela conecta.
+    def emissionDegree(self, v):
+        """This method will return the emission degree of a vertex in a oriented graph."""
+        return len(self.successor(v))
+
+    def receptionDegree(self, v):
+        """It will return the reception degree of a vertex in a oriented graph."""
+        return len(self.predecessor(v))
+
     def weight(self, v1, v2):
+        """It will return the weight of a connection between two vertices."""
         return self.graph[v1][v2]
 
-#Os métodos depthFirstSearch e searchCycle farão uma busca por profundidade no grafo,
-#seguindo como objetivo verificar se há ciclos no grafo.
     def depthFirstSearch(self, v, vA, alreadyVisited, l):
+        """It will do a depth search in the graph, with the objective to find a cycle."""
         if v in alreadyVisited:
             return True
         alreadyVisited.add(v)
@@ -144,7 +149,11 @@ class Graph(object):
         return False
 
     def searchCycle(self, v):
-        l = self.vertexes()
+        """
+        This method is responsible to solve the problem with disconnected graphs that can
+        occur if we utilize just the depthFirstSearch method.
+        """
+        l = self.vertices()
         _list = set()
         while True:
             try:
@@ -156,6 +165,6 @@ class Graph(object):
 
         return False
         
-#Método determinado para "printar" o grafo.
     def __str__(self):
+        """This method will be resposible for the print of the graph"""
         return '{}({})'.format(self.__class__.__name__, dict(self.weight))

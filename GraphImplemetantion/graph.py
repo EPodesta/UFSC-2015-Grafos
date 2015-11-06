@@ -12,7 +12,7 @@ class Graph(object):
     def __init__(self, initialVertex, weight=False, oriented=False):
         """
         Inicialize a graph. The init recieves the initial vertex and two boolean to set if the graph
-        will be weighted or oriented.
+        will be weighted or orienteded, respectively.
         """
         self.graph = defaultdict(dict)
         self._oriented = oriented
@@ -25,7 +25,7 @@ class Graph(object):
         self.graph[v1]
 
     def addEdge(self, v1, v2, weight=0):
-        """This method will connected two vertices and, if was especified, will add a weight."""
+        """This method will connected two vertices and, if was especified, a weight."""
 
         if not self._oriented:
             if self._weight:
@@ -56,7 +56,7 @@ class Graph(object):
             pass
 
     def deleteEdge(self, v1, v2):
-        """This method will desconnect two vertices(delete an edge)."""
+        """This method will desconnect two vertices."""
         if not self._oriented:
             try:
                 del self.graph[v1][v2]
@@ -106,12 +106,12 @@ class Graph(object):
         return _set
 
     def successor(self, v):
-        """It will return the successors of a vertex in an oriented graph."""
+        """It will return the successors of a vertex in a oriented graph."""
         if self._oriented:
             return self.graph[v]
 
     def predecessor(self, v):
-        """It will return the predecessors of a vertex in an oriented graph."""
+        """It will return the predecessors of a vertex in a oriented graph."""
         if self._oriented:
             return {i for i in self.graph if v in self.graph[i]}
 
@@ -124,11 +124,11 @@ class Graph(object):
         return count
 
     def emissionDegree(self, v):
-        """This method will return the emission degree of a vertex in an oriented graph."""
+        """This method will return the emission degree of a vertex in a oriented graph."""
         return len(self.successor(v))
 
     def receptionDegree(self, v):
-        """It will return the reception degree of a vertex in an oriented graph."""
+        """It will return the reception degree of a vertex in a oriented graph."""
         return len(self.predecessor(v))
 
     def weight(self, v1, v2):

@@ -118,10 +118,7 @@ class Graph(object):
     def degree(self, v):
         """This method will return the quantity of edges of a vertex in a non-oriented graph."""
         adj = self.adjacent(v)
-        count = 0
-        for vertices in adj:
-            count += 1
-        return count
+        return len(adj)
 
     def emissionDegree(self, v):
         """This method will return the emission degree of a vertex in an oriented graph."""

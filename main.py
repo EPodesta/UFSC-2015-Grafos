@@ -47,6 +47,8 @@ print g1.weight('A', 'B')
 print("Order")
 print g1.order()
 
+print("Degree of B:")
+print g1.degree('B')
 
 print("Get one vertex:")
 print g1.oneVertex()
@@ -60,11 +62,11 @@ print g1.adjacent('B')
 print("searchCycle in this graph:")
 print g1.searchCycle('A')
 
-print("Predecessor of G")
-print (g1.predecessor('G'))
+print("Predecessor of B")
+print (g1.predecessor('B'))
 
-print("Successor of G")
-print(g1.successor('G'))
+print("Successor of B")
+print(g1.successor('B'))
 
 print("Oriented:")
 g = Graph('A', True, True)
@@ -93,6 +95,8 @@ print g.weight('A', 'B')
 print("Order")
 print g.order()
 
+print("Degree of B:")
+print g.degree('B')
 
 print("Get one vertex:")
 print g.oneVertex()
@@ -103,17 +107,14 @@ print g.vertices()
 print("Get adjacents of B:")
 print g.adjacent('B')
 
-print("searchCycle in this graph:")
-print g.searchCycle('A')
-
 print("Predecessor of G")
 print (g.predecessor('G'))
 
 print("Successor of G")
 print(g.successor('G'))
 
-print("Degree emission of G")
-print(g.emissionDegree('A'))
+print("Degree emission of B")
+print(g.emissionDegree('B'))
 
-print("Degree Reception of G")
-print(g.receptionDegree('A'))
+print("Degree Reception of B")
+print(g.receptionDegree('B'))
